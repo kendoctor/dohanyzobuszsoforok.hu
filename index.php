@@ -516,7 +516,7 @@ $(function()
 <p>Legvégül pedig köszönöm az érintett buszsofőröknek, hogy addig húzták az agyamat, amíg össze nem raktam ezt a szájtot.  :)</p>
 
 </div>
-&copy; 2008 Monda László.  <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Néhány jog fenntartva.</a>
+&copy; 2008 Monda László.  <a href="http://www.gnu.org/licenses/gpl-3.0.txt">Néhány jog fenntartva.</a>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
