@@ -1,21 +1,3 @@
-<?php
-function draw_select($name, $number_of_items, $start_number=0, $default_number=null, $names=null)
-{
-    print "<select id=\"$name\">";
-    if ($default_number === null) {
-        print "<option value=\"\"></option>";
-    }
-    for ($i=$start_number; $i<$start_number+$number_of_items; $i++) {
-        print "<option value=\"".($i<10 ? "0$i" : $i)."\"" .
-              ($default_number!==null && $i==$default_number ? ' selected="selected"' : '') .
-              '>' . ($names===null ? ($i<10 ? "0$i" : $i) : $names[$i]) . '</option>';
-    }
-    print "</select>";
-}
-
-$month_names = array('január', 'február', 'március', 'április', 'május', 'június',
-                     'július', 'augusztus', 'szeptember', 'október', 'november', 'december');
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="hu" lang="hu">
 <head>
@@ -80,7 +62,7 @@ form input[type=button] {
 
 </style>
 
-<script type="text/javascript" src="jquery-1.2.6.min.js"></script>
+<script type="text/javascript" src="components/jquery/dist/jquery.min.js"></script>
 
 <script type="text/javascript">
 //<![CDATA[
@@ -229,6 +211,49 @@ function generate_mail()
 
 $(function()
 {
+    $('select.generated').each(function(selectId, selectElement) {
+        var select = $(selectElement);
+        var numberOfItems = select.data('numberOfItems');
+
+        var startNumber = select.data('startNumber');
+        if (startNumber === undefined) {
+            startNumber = 0;
+        }
+
+        var defaultNumber = select.data('defaultNumber');
+        var options = null;
+        switch (select.attr('id')) {
+            case 'start-year':
+                defaultNumber = new Date().getFullYear();
+                startNumber = defaultNumber - 1;
+                break;
+            case 'start-month':
+                defaultNumber = new Date().getMonth();
+                options = ['január', 'február', 'március', 'április', 'május', 'június',
+                           'július', 'augusztus', 'szeptember', 'október', 'november', 'december'];
+                break;
+            case 'start-day':
+                defaultNumber = new Date().getDate();
+                break;
+        }
+
+        select.append($("<option default></option>"));
+        for (var i=0; i<numberOfItems; i++) {
+            var value = null;
+            var text = null;
+            if (options) {
+                value = i;
+                text = options[i];
+            } else {
+                value = i+startNumber;
+                text = value<10 ? "0"+value : value;
+            }
+            select.append($("<option></option>").attr("value", value).text(text));
+        }
+
+        select.val(defaultNumber);
+    });
+
     $('#person-name').keyup(function() {
         $('#envelope-person-name').text(this.value ? this.value : 'neved');
     }).trigger('keyup');
@@ -381,11 +406,11 @@ $(function()
     </tr><tr>
         <td class="form-row-title">Indulás ideje:</td>
         <td>
-            <?php draw_select('start-year', 2, date('Y')-1, date('Y')); ?> év&nbsp;
-            <?php draw_select('start-month', 12, 0, date('n')-1, $month_names); ?> hónap&nbsp;
-            <?php draw_select('start-day', 31, 1, date('j')); ?> nap&nbsp;
-            <?php draw_select('start-hour', 24); ?> óra&nbsp;
-            <?php draw_select('start-minute', 60); ?> perc
+            <select id="start-year" class="generated" data-number-of-items="3"></select> év&nbsp;
+            <select id="start-month" class="generated" data-number-of-items="12" data-start-number="0"></select> hónap&nbsp;
+            <select id="start-day" class="generated" data-number-of-items="31" data-start-number="1"></select> nap&nbsp;
+            <select id="start-hour" class="generated" data-number-of-items="24"></select> óra&nbsp;
+            <select id="start-minute" class="generated" data-number-of-items="60"></select> perc
         </td>
     </tr><tr>
        <td class="vertical-spacing"></td><td></td>
@@ -396,8 +421,8 @@ $(function()
     </tr><tr>
         <td class="form-row-title">Érkezés ideje:</td>
         <td>
-            <?php draw_select('end-hour', 24); ?> óra&nbsp;
-            <?php draw_select('end-minute', 60); ?> perc
+            <select id="end-hour" class="generated" data-number-of-items="24"></select> óra&nbsp;
+            <select id="end-minute" class="generated" data-number-of-items="60"></select> perc
         </td>
     </tr>
 </table>
@@ -521,8 +546,6 @@ $(function()
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
 try {
 var pageTracker = _gat._getTracker("UA-6307134-1");
 pageTracker._trackPageview();
