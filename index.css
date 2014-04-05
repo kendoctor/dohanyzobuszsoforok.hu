@@ -1,0 +1,44 @@
+body {
+    text-align: center;
+}
+
+#main {
+    text-align:left;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1em;
+    border: solid 1px #aaa;
+    padding: 1em;
+}
+
+.form-row-title {
+    text-align: right;
+    font-weight: bold;
+}
+
+.alert {
+    color: #a00;
+    text-align: center;
+}
+
+.vertical-spacing {
+    height:0.5em;
+}
+
+form input[type=button] {
+    width: 100%;
+    text-align: left;
+}
+
+#envelope {
+    width: 500px;
+    height: 300px;
+    background-color: #ffe;
+    border: solid 1px #aaa;
+    padding: 20px;
+}
+
+#envelope td {
+    vertical-align: top;
+}
