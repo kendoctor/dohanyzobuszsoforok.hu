@@ -96,6 +96,7 @@ function generate_mail()
             field_value = transform_word_ending(field_value) +
                           (does_word_sound_low(field_value) ? 'ra' : 're');
         }
+console.log(id, field_value);
         actual_mail_text = actual_mail_text.replace(id, field_value);
     });
 
@@ -177,7 +178,7 @@ $(function()
                 text = options[i];
             } else {
                 value = i+startNumber;
-                text = value<10 ? "0"+value : value;
+                value = text = value<10 ? "0"+value : value;
             }
             select.append($("<option></option>").attr("value", value).text(text));
         }
